@@ -8,6 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
         Saving saving = new Saving();
+        Unzip unzip = new Unzip();
 
         GameProgress progress_1 = new GameProgress(150, 423, 15, 623);
         GameProgress progress_2 = new GameProgress(95, 358, 21, 854);
@@ -26,5 +27,9 @@ public class Main {
         for (String item : saveFiles) {
             new File(item).delete();
         }
+
+        unzip.openZip(ZIP, PATH);
+        GameProgress progress = unzip.openProgress(PATH + "/save2.dat");
+        System.out.println(progress);
     }
 }

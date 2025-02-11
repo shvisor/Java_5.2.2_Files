@@ -7,8 +7,8 @@ import java.util.zip.ZipOutputStream;
 
 public class Saving {
 
-    public void saveGame(String PATH, GameProgress progress) {
-        try (FileOutputStream fos = new FileOutputStream(PATH);
+    public void saveGame(String path, GameProgress progress) {
+        try (FileOutputStream fos = new FileOutputStream(path);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(progress);
         } catch (Exception e) {
@@ -16,13 +16,15 @@ public class Saving {
         }
     }
 
-    public void zipFiles(String ZIP, List<String> PATH) {
-        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(ZIP))) {
-            for (String name : PATH) {
+    public void zipFiles(String zip, List<String> path) {
+        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zip))) {
+            for (String name : path) {
                 try (FileInputStream fis = new FileInputStream(name)) {
                     ZipEntry entry = new ZipEntry(name);
                     zos.putNextEntry(entry);
-                    zos.write(fis.read());
+                    byte[] buffer = new byte[fis.available()];
+                    fis.read(buffer);
+                    zos.write(buffer);
                     zos.closeEntry();
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
